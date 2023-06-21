@@ -8,7 +8,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 const Homes = () => {
     const [user, SetUser] = useState()
     const getData = () => {
-        fetch('/todo', {
+        fetch('https://ivory-iguana-tutu.cyclic.app/todo', {
             method: "GET",
             headers: {
                 'x-access-token': localStorage.getItem('token')

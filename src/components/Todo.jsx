@@ -5,7 +5,7 @@ import { ThreeDots } from 'react-loader-spinner';
 const Todo = () => {
   const [todo, setTodo] = useState([])
   const getData = () => {
-    fetch('/todo', {
+    fetch('https://ivory-iguana-tutu.cyclic.app/todo', {
       method: "GET",
       headers: {
         'x-access-token': localStorage.getItem('token')
@@ -18,7 +18,7 @@ const Todo = () => {
   const setChecked = (ind) => {
     var tod = todo
     tod[ind].completed = !tod[ind].completed;
-    fetch('/todoupdate', {
+    fetch('https://ivory-iguana-tutu.cyclic.app/todoupdate', {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ const Todo = () => {
     if (window.confirm('Sure you want to delete the todo') === true) {
       var tod = todo
       tod.splice(ind, 1)
-      fetch('/todoupdate', {
+      fetch('https://ivory-iguana-tutu.cyclic.app/todoupdate', {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ const Todo = () => {
     }
     console.log(to)
     try {
-      fetch('/add-todo', {
+      fetch('https://ivory-iguana-tutu.cyclic.app/add-todo', {
         method: 'POST',
         headers: {
           'x-access-token': localStorage.getItem('token'),

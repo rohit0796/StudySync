@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddSubjectForm from './AddSubjectForm';
 import FullAttendance from './FullAttendance';
 import { ThreeDots } from 'react-loader-spinner';
+import url from './url';
 const Attendence = () => {
   const [subjects, setSubjects] = useState([]);
   const [user, setUser] = useState(null);
@@ -13,7 +14,7 @@ const Attendence = () => {
   const [ind, setind] = useState()
 
   const fetchUser = async () => {
-    fetch('/todo', {
+    fetch(`https://ivory-iguana-tutu.cyclic.app/todo`, {
       method: "GET",
       headers: {
         'x-access-token': localStorage.getItem('token')

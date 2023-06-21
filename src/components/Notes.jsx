@@ -58,7 +58,7 @@ export default function Notes() {
   const [notes, setnotes] = React.useState([])
 
   const getData = () => {
-    fetch('/todo', {
+    fetch('https://ivory-iguana-tutu.cyclic.app/todo', {
       method: "GET",
       headers: {
         'x-access-token': localStorage.getItem('token')
@@ -86,7 +86,7 @@ export default function Notes() {
       desc: e.target[1].value,
     }
     try {
-      fetch('/add-notes', {
+      fetch('https://ivory-iguana-tutu.cyclic.app/add-notes', {
         method: 'POST',
         headers: {
           'x-access-token': localStorage.getItem('token'),
@@ -111,7 +111,7 @@ export default function Notes() {
     obj[ind].title = title;
     obj[ind].desc = desc;
     try {
-      fetch('/update-notes', {
+      fetch('https://ivory-iguana-tutu.cyclic.app/update-notes', {
         method: 'POST',
         headers: {
           'x-access-token': localStorage.getItem('token'),

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './attendence.css'
+import url from './url';
 const AddSubjectForm = ({ onSubjectAdded }) => {
     const [subjectName, setSubjectName] = useState('');
 
@@ -7,7 +8,7 @@ const AddSubjectForm = ({ onSubjectAdded }) => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`/add-subject`, {
+            const response = await fetch(`${url}/add-subject`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

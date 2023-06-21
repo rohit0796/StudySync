@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './attendence.css'
+import url from './url';
 const AttendanceForm = ({subjectName , change , setChange}) => {
   const [date, setDate] = useState('');
   const [status, setStatus] = useState('present');
@@ -14,7 +15,7 @@ const AttendanceForm = ({subjectName , change , setChange}) => {
     };
 
     try {
-      const response = await fetch('/attendance', {
+      const response = await fetch(`${url}/attendance`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -60,7 +60,7 @@ function Form() {
             formData.append('password', password);
 
             try {
-                const res = await fetch('/register', {
+                const res = await fetch('https://ivory-iguana-tutu.cyclic.app/register', {
                     method: 'POST',
                     body: formData,
                 });

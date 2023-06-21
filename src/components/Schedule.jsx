@@ -13,7 +13,7 @@ const Schedule = () => {
     const [events, setEvents] = useState([])
     const getData = async () => {
         try {
-            const response = await fetch('/submit', {
+            const response = await fetch('https://ivory-iguana-tutu.cyclic.app/submit', {
                 method: 'GET',
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
@@ -35,7 +35,7 @@ const Schedule = () => {
         arr.splice(ind, 1);
 
         try {
-            const response = await fetch('/delete-event', {
+            const response = await fetch('https://ivory-iguana-tutu.cyclic.app/delete-event', {
                 method: 'POST',
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
@@ -70,7 +70,7 @@ const Schedule = () => {
         };
 
         try {
-            const response = await fetch('/add-event', {
+            const response = await fetch('https://ivory-iguana-tutu.cyclic.app/add-event', {
                 method: 'POST',
                 headers: {
                     'x-access-token': localStorage.getItem('token'),

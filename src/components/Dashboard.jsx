@@ -6,6 +6,7 @@ import './dashboard.css'
 import Context from '../Context/Context';
 import user from '../components/media/user.png'
 import { ThreeDots } from 'react-loader-spinner';
+import url from './url';
 const Dashboard = () => {
     const [updated, setUpdated] = useState(true)
     const state = useContext(Context);
@@ -20,7 +21,7 @@ const Dashboard = () => {
 
     async function getData() {
         try {
-            const response = await fetch('/submit', {
+            const response = await fetch(`${url}/submit`, {
                 method: 'GET',
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
@@ -52,7 +53,7 @@ const Dashboard = () => {
         formData.append('password', user.password);
 
         try {
-            const response = await fetch('/submit/updates', {
+            const response = await fetch(`${url}/submit/updates`, {
                 method: 'POST',
                 headers: {
                     'x-access-token': localStorage.getItem('token'),

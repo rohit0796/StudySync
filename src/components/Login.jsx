@@ -28,7 +28,7 @@ const Login = () => {
         else if (password == '')
             alert("Please fill the password")
         else {
-            const res = await fetch('/login', {
+            const res = await fetch('https://ivory-iguana-tutu.cyclic.app/login', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
