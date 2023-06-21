@@ -1,0 +1,211 @@
+.Add-attendence {
+    width: 150px;
+    background: #2c2d4c;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 12px;
+    color: white;
+    height: 200px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    transition: all 0.2s ease-in-out;
+    padding: 20px;
+    border: none;
+    outline: none;
+}
+
+.AA {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.but-cont {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.attend-cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.subjects {
+    width: 200px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #2c2d4c;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    padding: 20px 20px 2px 20px;
+    border-radius: 15px;
+}
+
+.percent {
+    height: 80px;
+    width: 80px;
+    border: 3px solid;
+    display: flex;
+    background: transparent;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.subjects input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: white;
+}
+
+.attend-cont ul {
+    width: 80%;
+    display: flex;
+    overflow-x: scroll;
+    white-space: nowrap;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+.attend-cont ul {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+/* Style the scrollbar track */
+::-webkit-scrollbar {
+    height: 2px;
+}
+
+/* Style the scrollbar thumb */
+.attend-cont ul::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+    border-radius: 4px;
+}
+
+/* Style the scrollbar thumb when hovering */
+.attend-cont ul::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.subjects form {
+    text-align: center;
+}
+
+.subjects button {
+    padding: 6px 10px;
+    margin: 5px;
+    outline: none;
+    border: none;
+    border-radius: 9px;
+    color: white;
+    border: 1px solid #0d0e23;
+    background-color: transparent;
+}
+
+.subjects button:hover {
+    background-color: #18192f;
+}
+
+.subjects a {
+    color: white;
+    font-size: 12px;
+    text-decoration: underline;
+}
+
+.subjects a:hover {
+    color: #0d0e23;
+    cursor: pointer;
+
+}
+
+.AddSub form {
+    background: #0d0e23;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    border-radius: 15px;
+}
+
+.AddSub input {
+    background: transparent;
+    border: none;
+    color: white;
+    outline: none;
+    padding: 5px;
+    border-bottom: 1px solid;
+}
+
+.AddSub button {
+    padding: 10px;
+    margin: 5px;
+    outline: none;
+    border: none;
+    border-radius: 9px;
+    color: white;
+    background-color: transparent;
+}
+
+.AddSub button:hover {
+    background-color: #18192f;
+
+}
+
+.fullatt {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+    padding: 8px 12px;
+    background: #2c2d4c;
+    border-radius: 15px;
+}
+
+.fullat {
+    padding: 2px 19px;
+    display: flex;
+    justify-content: space-between;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.FullAtt-cont {
+    width: 55%;
+    text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+    .AA {
+        display: block;
+        width: 100%;
+    }
+
+    .attend-cont ul {
+        width: 100%;
+    }
+
+    .subjects select {
+        width: 65%;
+    }
+
+    .AddSub form {
+        flex-direction: column;
+    }
+    .FullAtt-cont{
+        width: 100%;
+    }
+}

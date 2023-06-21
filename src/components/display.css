@@ -1,0 +1,19 @@
+
+.table{
+    border: 2px solid rgb(65, 64, 64);
+    margin-top: 20px;
+    box-shadow: rgb(0, 0, 0,0.35) 0px 5px 23px;
+}
+tr{
+    border: 2px solid black;
+}
+button{
+    margin:0px 4px 0 0;
+    
+}
+button > img{
+    height:20px;
+}
+button:hover{
+    background: rgb(128, 104, 104);
+}

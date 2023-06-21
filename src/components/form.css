@@ -1,0 +1,118 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    background: #0d0e23;
+    height: 100vh;
+    width: 100vw;
+}
+
+.cont {
+    background: #2c2d4c;
+    border: 2 solid black;
+    border-radius: 10px;
+    box-shadow: rgb(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 10px 10px;
+    width: 500px;
+    margin: 25px;
+}
+
+.but {
+    float: right;
+    background: none;
+    border: none;
+    margin-top: -5px;
+    transition: transform 330ms ease-in-out;
+}
+
+.res button {
+    margin: 3px 10px;
+}
+
+.res a {
+    text-decoration: underline;
+}
+
+.res a:hover {
+    cursor: pointer;
+}
+
+.but:hover {
+    transform: scale(1.1);
+    background: none;
+}
+
+.but>img {
+    height: 20px
+}
+
+input,
+select {
+    margin: 5px;
+
+}
+
+.submit {
+    text-align: center;
+    margin-top: 5px;
+    transition: transform 330ms ease-in-out;
+}
+
+.reset {
+    text-align: center;
+    margin-top: 5px;
+    transition: transform 330ms ease-in-out;
+}
+
+.res button:hover {
+    background-color: #202142;
+}
+
+.tb input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 7px;
+    color: white;
+    border-bottom: 1px solid;
+}
+
+.dp input {
+    border-bottom: none;
+}
+
+.submit>button {
+    margin: 5px;
+    padding: 5px;
+}
+
+.bodys {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.bodys h1 {
+    font-weight: 250;
+}
+
+.res {
+    text-align: center;
+}
+
+.res button {
+    padding: 8px 15px;
+    border: none;
+    outline: none;
+    background-color: #0d0e23;
+    color: white;
+    border-radius: 12px;
+
+}
+
+.head {
+    display: flex;
+    justify-content: space-between;
+}

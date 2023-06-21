@@ -1,0 +1,60 @@
+.todo-cont form
+{
+    background-color: #070710;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    margin: 20px 40px;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+}
+.todo-cont form input{
+    width: 80%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    color: white;
+    background: transparent;
+    border-bottom: 1px solid rgb(26, 26, 26);
+}
+.todo-cont button{
+    border: none;
+    outline: none;
+    background: transparent;
+}
+.todoSubmit{
+    background: rgba(18, 18, 18, 0.67);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: none;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    color: white;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 2px 5px;
+}
+.todoSubmit:hover {
+    background-color: #2f2525a5;
+}
+.todos{
+    background: #2c2d4c;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    margin: 10px 40px;
+    padding: 10px;
+    align-items: center;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+.rig button{
+    width: auto;
+    background: transparent;
+    color: white;
+
+}
