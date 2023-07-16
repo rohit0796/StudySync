@@ -116,10 +116,12 @@ const Dashboard = () => {
                 <div className="details">
 
                     <div className='photos' style={{
-                        backgroundImage: `url(${getImageSrc()})`,
+                        // backgroundImage: `url(${getImageSrc()})`,
+                        color:'white',
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',
                     }}>
+                        {user.name[0]}
                     </div>
                     {isEditMode ? (
                         <input type="file" name='ProfilePhoto' onChange={(e) => setUser({ ...user, ['ProfilePhoto']: e.target.files[0] })} />
