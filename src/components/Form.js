@@ -13,7 +13,7 @@ function Form() {
         mob: '',
         gender: '',
         branch: '',
-        ProfilePhoto: null,
+        // ProfilePhoto: null,
         password: '',
         cpassword: ''
     });
@@ -41,9 +41,11 @@ function Form() {
             alert('Please fill in the email field');
         } else if (dob === '') {
             alert('Please fill in the date of birth field');
-        } else if (ProfilePhoto === null) {
-            alert('Please provide a profile picture');
-        } else if (mob === '') {
+        }
+        // else if (ProfilePhoto === null) {
+        //     alert('Please provide a profile picture');
+        // } 
+        else if (mob === '') {
             alert('Please fill in the mobile no. field');
         } else if (cpassword !== password) {
             alert('Your password and confirm password inputs must be the same');
@@ -56,7 +58,7 @@ function Form() {
             formData.append('mob', mob);
             formData.append('gender', gender);
             formData.append('branch', branch);
-            formData.append('ProfilePhoto', ProfilePhoto);
+            // formData.append('ProfilePhoto', ProfilePhoto);
             formData.append('password', password);
 
             try {
@@ -113,10 +115,10 @@ function Form() {
                                             <td>Email:</td>
                                             <td> <input type="text" placeholder="enter your Email" id="mail" name="email" value={user.email} onChange={inputValue} required /> </td>
                                         </tr>
-                                        <tr>
-                                            <td>Upload Dp:</td>
-                                            <td className='dp'> <input type="file" name="ProfilePhoto" onChange={filechange} required /> </td>
-                                        </tr>
+                                        // <tr>
+                                        //     <td>Upload Dp:</td>
+                                        //     <td className='dp'> <input type="file" name="ProfilePhoto" onChange={filechange} required /> </td>
+                                        // </tr>
                                         <tr>
                                             <td>Date of birth:</td>
                                             <td> <input type="date" id="date" value={user.dob} name="dob" onChange={inputValue} required /> </td>
