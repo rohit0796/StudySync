@@ -47,10 +47,12 @@ const Homes = () => {
             <div className='user-det'>
                 <div className="user-top">
                     <div className="photo" style={{
-                        backgroundImage: `url(${getImageSrc()})`,
+                        // backgroundImage: `url(${getImageSrc()})`,
+                        color:'white',
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',
                     }}>
+                        {user ? user.name[0] : ""}
                     </div>
                     <div className="text">
                         <div className='Name'>Hello {user ? user.name : ""}</div>
