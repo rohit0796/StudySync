@@ -17,8 +17,8 @@ The Student Class Management System is a web application that allows students to
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/yourusername/student-class-management.git`
-2. Navigate to the project directory: `cd student-class-management`
+1. Clone the repository: `git clone https://github.com/rohit0796/StudySync.git`
+2. Navigate to the project directory: `cd StudySync`
 3. Install server dependencies: `npm install`
 4. Navigate to the `client` directory: `cd client`
 5. Install client dependencies: `npm install`
