@@ -81,9 +81,12 @@ const Home = () => {
                     <div className="bottom">
                         <button onClick={() => { setpage(6); setexpanded(false) }}>{isexpanded ? 'User-Details' : <PersonIcon />}</button>
                         <button onClick={() => {
-                            localStorage.removeItem('token')
-                            state.setToken(null)
-                            navigate('/login')
+                            if (window.confirm("Are You Sure You Want To Log Out ?") === true) {
+
+                                localStorage.removeItem('token')
+                                state.setToken(null)
+                                navigate('/login')
+                            }
                         }}>{isexpanded ? 'Logout' : <LogoutIcon />}</button>
                         <button className={`toggle-button`} onClick={() => setexpanded(!isexpanded)}>{isexpanded ? '<' : ">"}</button>
                     </div>

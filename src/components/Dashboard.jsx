@@ -7,10 +7,15 @@ import Context from '../Context/Context';
 import user from '../components/media/user.png'
 import { ThreeDots } from 'react-loader-spinner';
 import url from './url';
+import toast, { Toaster } from 'react-hot-toast';
+import AvatarModal from './AvatarModal';
 const Dashboard = () => {
     const [updated, setUpdated] = useState(true)
     const state = useContext(Context);
     const [date, setDate] = useState('');
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const navigate = useNavigate();
     const [user, setUser] = useState({});
     const [isEditMode, setIsEditMode] = useState(false);
@@ -25,6 +30,7 @@ const Dashboard = () => {
                 method: 'GET',
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
+
                 },
             });
             const data = await response.json();
@@ -40,32 +46,24 @@ const Dashboard = () => {
         }
     }
 
-    const postData = async () => {
-        const formData = new FormData();
-        formData.append('name', user.name);
-        formData.append('redgno', user.redgno);
-        formData.append('email', user.email);
-        formData.append('dob', user.dob);
-        formData.append('mob', user.mob);
-        formData.append('gender', user.gender);
-        formData.append('branch', user.branch);
-        formData.append('ProfilePhoto', user.ProfilePhoto);
-        formData.append('password', user.password);
-
+    const postData = async (e) => {
+        const formData = user
         try {
             const response = await fetch(`${url}/submit/updates`, {
                 method: 'POST',
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
+                    'Content-Type': 'application/json',
+
                 },
-                body: formData,
+                body: JSON.stringify(formData),
             });
 
             const data = await response.json();
             if (data.status === 422 || !data) {
-                window.alert('Invalid registration');
+                toast('Invalid Updates');
             } else {
-                window.alert('Updated successfully');
+                toast('Updated successfully');
             }
             toggleEditMode();
         } catch (error) {
@@ -83,15 +81,6 @@ const Dashboard = () => {
         }
     }, [updated]);
 
-    const getImageSrc = () => {
-        if (user.image && user.image.data) {
-            const base64String = btoa(
-                String.fromCharCode(...new Uint8Array(user.image.data.data))
-            );
-            return `data:${user.image.contentType};base64,${base64String}`;
-        }
-        return user;
-    };
     if (!user)
         return (
             <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
@@ -110,22 +99,31 @@ const Dashboard = () => {
     else
         return (
             <div className='det-cont'>
+                <Toaster toastOptions={{
+                    style: {
+                        border: '1px solid white',
+                        padding: '16px',
+                        color: 'white',
+                        backgroundColor: '#0d0e23'
+                    },
+                }} />
                 <div className="header">
                     <h1>User Details</h1>
                 </div>
                 <div className="details">
 
                     <div className='photos' style={{
-                        backgroundImage: `url(${getImageSrc()})`,
+                        backgroundImage: `url(${user.image})`,
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',
                     }}>
                     </div>
                     {isEditMode ? (
-                        <input type="file" name='ProfilePhoto' onChange={(e) => setUser({ ...user, ['ProfilePhoto']: e.target.files[0] })} />
+                        <button onClick={handleOpen} className='submit'>Choose</button>
                     ) : (
                         <></>
                     )}
+                    <AvatarModal handleClose={handleClose} user={user} setUser={setUser} open={open} />
                     <div>
                         {isEditMode ? (
                             <input type="text" value={user.name || ''} onChange={(e) => setUser({ ...user, name: e.target.value })} className='User-Name' />
@@ -169,7 +167,15 @@ const Dashboard = () => {
                             <span>Date of Birth:</span>
                             <div className="content">
                                 {isEditMode ? (
-                                    <input type="date" value={date || ''} onChange={(e) => setDate(e.target.value)} />
+                                    <input type="date" value={date || ''} onChange={(e) => {
+                                        setUser({ ...user, dob: e.target.value })
+                                        const dt = new Date(user.dob);
+                                        let mon = dt.getMonth() + 1;
+                                        let day = dt.getDate();
+                                        let yr = dt.getFullYear();
+                                        const formattedDate = `${yr}-${mon < 10 ? '0' + mon : mon}-${day < 10 ? '0' + day : day}`;
+                                        setDate(formattedDate);
+                                    }} />
                                 ) : (
                                     <span>{date}</span>
                                 )}

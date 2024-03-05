@@ -8,23 +8,28 @@ import { ThreeDots } from 'react-loader-spinner';
 import url from './url';
 const Attendence = () => {
   const [subjects, setSubjects] = useState([]);
-  const [user, setUser] = useState(null);
+  const [load, setLoad] = useState(false);
   const [change, setChange] = useState(false)
   const [open, setopen] = useState(false)
   const [ind, setind] = useState()
 
   const fetchUser = async () => {
-    fetch(`https://ivory-iguana-tutu.cyclic.app/todo`, {
+    fetch(`${url}/todo`, {
       method: "GET",
       headers: {
         'x-access-token': localStorage.getItem('token')
       }
-    }).then((dat) => dat.json()).then((val) => setUser(val.data))
-
+    }).then((dat) => dat.json()).then((val) => {
+      setSubjects(val.data.subjects)
+    })
   };
+
+  useEffect(() => {
+    fetchUser();
+  }, [change]);
+
   const DeleteSub = (ind) => {
-    setopen(!open)
-    var sub = user.subjects
+    var sub = subjects
     sub.splice(ind, 1);
     if (window.confirm('Sure you want to delete the subject') === true) {
       fetch('/subupdate', {
@@ -34,80 +39,59 @@ const Attendence = () => {
           'x-access-token': localStorage.getItem('token')
         },
         body: JSON.stringify(sub)
-      }).then((val) => val.json()).then((dat) => console.log(dat));
-      fetchUser()
+      }).then((val) => val.json()).then((val) => setSubjects(sub));
+      setopen(!open)
     }
   }
-  useEffect(() => {
-    // Fetch user data by userId
-    fetchUser();
-  }, [subjects, change]);
+
 
   const handleSubjectAdded = (subject) => {
-    setSubjects((prevSubjects) => [...prevSubjects, subject]);
+    setSubjects(subject);
   };
-  if (!user)
-    return (
-      <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-        <ThreeDots
-          height="80"
-          width="80"
-          radius="9"
-          color="white"
-          ariaLabel="three-dots-loading"
-          wrapperStyle={{}}
-          wrapperClassName=""
-          visible={true}
-        />
-      </div>
-    )
-  else
-    return (
 
-      <div className='AA'>
-        <div className="header">
-          <h1>Attendance</h1>
-        </div>
-        {!user ? (
-          <p>Loading...</p>
+  return (
+
+    <div className='AA'>
+      <div className="header">
+        <h1>Attendance</h1>
+      </div>
+
+      <div className='attend-cont'>
+        <h3>Subjects</h3>
+        {subjects.length === 0 ? (
+          <p>No subjects added yet.</p>
         ) : (
-          <div className='attend-cont'>
-            <h3>Subjects</h3>
-            {user.subjects.length === 0 ? (
-              <p>No subjects added yet.</p>
-            ) : (
-              <ul>
-                {user.subjects.map((subject, ind) => {
-                  var totalClass = user.subjects[ind].attendance.length
-                  var newarr = user && user.subjects[ind].attendance.filter((ele) => ele.status == 'present')
-                  var present = newarr.length
-                  const att = (present / totalClass) * 100
-                  return (
-                    <div key={ind} className='subjects'>
-                      <div className="percent">
-                        {att ? att.toFixed(2) : 0}%
-                      </div>
-                      <span>{subject && subject.name}</span>
-                      <AttendanceForm subjectName={subject.name} change={change} setChange={setChange} />
-                      <a onClick={() => setind(ind)}>Show Full Attendance</a>
-                      <button style={{ color: '#0d0e23', margin: 0, border: 'none', background: 'transparent', outline: 'none' }} onClick={() => setopen(!open)}>{open ? "△" : "▽"}</button>
-                      {
-                        open && <a onClick={() => { DeleteSub(ind) }}><DeleteIcon /></a>
-                      }
-                    </div>
-                  )
-                })}
-              </ul>
-            )}
-            <AddSubjectForm onSubjectAdded={handleSubjectAdded} />
-          </div>
+          <ul>
+            {subjects.map((subject, ind) => {
+              var totalClass = subjects[ind].attendance.length
+              var newarr = subjects && subjects[ind].attendance.filter((ele) => ele.status == 'present')
+              var present = newarr.length
+              const att = (present / totalClass) * 100
+              return (
+                <div key={ind} className='subjects'>
+                  <div className="percent">
+                    {att ? att.toFixed(2) : 0}%
+                  </div>
+                  <span>{subject && subject.name}</span>
+                  <AttendanceForm subjectName={subject.name} change={change} setChange={setChange} />
+                  <a onClick={() => setind(ind)}>Show Full Attendance</a>
+                  <button style={{ color: '#0d0e23', margin: 0, border: 'none', background: 'transparent', outline: 'none' }} onClick={() => setopen(!open)}>{open ? "△" : "▽"}</button>
+                  {
+                    open && <a onClick={() => { DeleteSub(ind) }}><DeleteIcon /></a>
+                  }
+                </div>
+              )
+            })}
+          </ul>
         )}
-        {
-          ind != null ? <FullAttendance subject={user.subjects[ind]} /> : <div className='header'>Please Select a subject To See Its Full Attendance</div>
-        }
+        <AddSubjectForm onSubjectAdded={handleSubjectAdded} />
       </div>
+      {
+        ind != null ? <FullAttendance subject={subjects[ind]} /> : <div className='header'>Please Select a subject To See Its Full Attendance</div>
+      }
+    </div>
 
-    );
+  );
 }
 
 export default Attendence

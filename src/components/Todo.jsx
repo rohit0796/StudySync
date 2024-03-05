@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
 import './todo.css'
 import { ThreeDots } from 'react-loader-spinner';
+import url from './url';
+import toast, { Toaster } from 'react-hot-toast';
 const Todo = () => {
   const [todo, setTodo] = useState([])
   const getData = () => {
-    fetch('https://ivory-iguana-tutu.cyclic.app/todo', {
+    fetch(`${url}/todo`, {
       method: "GET",
       headers: {
         'x-access-token': localStorage.getItem('token')
@@ -15,43 +17,46 @@ const Todo = () => {
   useEffect(() => {
     getData()
   }, [])
+
   const setChecked = (ind) => {
     var tod = todo
     tod[ind].completed = !tod[ind].completed;
-    fetch('https://ivory-iguana-tutu.cyclic.app/todoupdate', {
+    fetch(`${url}/todoupdate`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
         'x-access-token': localStorage.getItem('token')
       },
       body: JSON.stringify(tod)
-    }).then((val) => val.json()).then((dat) => console.log(dat));
-    getData()
+    }).then((val) => val.json()).then((dat) => setTodo(dat.data.todos));
+
   }
+
+
   const Deletetodo = (ind) => {
     if (window.confirm('Sure you want to delete the todo') === true) {
       var tod = todo
       tod.splice(ind, 1)
-      fetch('https://ivory-iguana-tutu.cyclic.app/todoupdate', {
+      fetch(`${url}/todoupdate`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
           'x-access-token': localStorage.getItem('token')
         },
         body: JSON.stringify(tod)
-      }).then((val) => val.json()).then((dat) => console.log(dat));
-      getData()
+      }).then((val) => val.json()).then((dat) => { setTodo(dat.data.todos) });
     }
   }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const to = {
       title: e.target[0].value,
       completed: false,
     }
-    console.log(to)
+    e.target[0].value = "";
     try {
-      fetch('https://ivory-iguana-tutu.cyclic.app/add-todo', {
+      fetch(`${url}/add-todo`, {
         method: 'POST',
         headers: {
           'x-access-token': localStorage.getItem('token'),
@@ -62,16 +67,24 @@ const Todo = () => {
         .then((dat) => dat.json())
         .then((val) => {
           if (val) {
-            alert('Todo Added')
+            toast('Todo Added')
+            setTodo([...todo, to])
           }
         })
     } catch (error) {
       console.log(error)
     }
-    getData()
   }
   return (
     <div>
+      <Toaster toastOptions={{
+        style: {
+          border: '1px solid white',
+          padding: '16px',
+          color: 'white',
+          backgroundColor: '#0d0e23'
+        },
+      }} />
       <div className="header">
         <h1>To-Do</h1>
       </div>
@@ -89,11 +102,11 @@ const Todo = () => {
             const style = tod.completed ? 'line-through' : 'none'
             return (
               <div className="todos" key={ind}>
-                <div className="lef">
+                <div className="lef" onClick={() => setChecked(ind)} >
                   <input type="checkbox" onChange={() => setChecked(ind)} checked={tod.completed ? true : false} /><span style={{ textDecoration: style }}>{tod.title}</span>
                 </div>
                 <div className="rig">
-                  <button onClick={() => { Deletetodo(ind) }}><DeleteIcon /></button>
+                  <button className='del' onClick={() => { Deletetodo(ind) }}><DeleteIcon /></button>
                 </div>
               </div>
             )

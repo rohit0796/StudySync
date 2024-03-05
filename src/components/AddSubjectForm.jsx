@@ -19,8 +19,7 @@ const AddSubjectForm = ({ onSubjectAdded }) => {
 
             const data = await response.json();
             if (data.status === 'ok') {
-                // Call the callback function to notify the parent component
-                onSubjectAdded(data.subjects);
+                onSubjectAdded(data.data.subjects);
                 setSubjectName('');
             } else {
                 console.error('Failed to add subject:', data.error);

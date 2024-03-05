@@ -4,7 +4,7 @@ const FullAttendance = ({ subject }) => {
     return (
         <div className='FullAtt-cont'>
             <div className="header">
-                <h3>{subject.name}</h3>
+                <h3>{subject && subject.name}</h3>
             </div>
             <div className="fullat">
                 <span>Date</span>
@@ -14,7 +14,7 @@ const FullAttendance = ({ subject }) => {
                 subject && subject.attendance.map((ele) => {
                     return (
                         <div className="fullatt">
-                            <span>{ele.date.slice(0,10)}</span>
+                            <span>{ele.date.slice(0, 10)}</span>
                             <span>
                                 {ele.status}
                             </span>

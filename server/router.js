@@ -1,52 +1,45 @@
 const express = require("express")
 const router = express.Router()
-const schema = require('../server/Models/dbschema')
+const schema = require('./Models/dbschema')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 const multer = require('multer')
-const fs = require('fs')
-const ImageModel = require("./Models/ImageModel")
+// const fs = require('fs')
 var ObjectId = require('mongodb').ObjectID;
-const Storage = multer.diskStorage({
-    destination: 'uploads',
-    filename: (req, file, cb) => {
-        cb(null, file.originalname)
-    }
-})
-const upload = multer({
-    storage: Storage
-})
-router.post('/register', upload.single('ProfilePhoto'), async (req, res) => {
+// const Storage = multer.diskStorage({
+//     destination: 'uploads',
+//     filename: (req, file, cb) => {
+//         cb(null, file.originalname)
+//     }
+// })
+// const upload = multer({
+//     storage: Storage
+// })
+router.post('/register', async (req, res) => {
+    const { name, email, redgno, mob, dob, password, branch, gender, image } = req.body;
     try {
-        const { name, email, redgno, mob, dob, password, branch, hobbies, gender } = req.body;
-        const imagePath = req.file.path;
-
+        // const imagePath = req.file.path;
+        const email_user = await schema.findOne({ email: email })
+        if (email_user) {
+            res.status(422).json({ error: 'Email Already Exists try Logging In' });
+        }
         const user = new schema({
             name,
             email,
             redgno,
             mob,
             dob,
-            image: {
-                data: fs.readFileSync(imagePath),
-                contentType: req.file.mimetype
-            },
+            image,
             password,
             branch,
-            hobbies,
             gender
         });
 
         await user.save();
-        console.log("Saved in the database");
         res.json(user);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Internal Server Error' });
-    } finally {
-        // Delete the uploaded file after saving it in the database
-        if (req.file.path)
-            fs.unlinkSync(req.file.path);
     }
 });
 
@@ -80,9 +73,9 @@ router.get('/submit/update/:id', async (req, res) => {
 
 })
 
-router.post('/submit/updates', upload.single('ProfilePhoto'), async (req, res) => {
+router.post('/submit/updates', async (req, res) => {
     try {
-        const { name, email, redgno, mob, dob, password, branch, hobbies, gender } = req.body;
+        const { name, email, redgno, mob, dob, password, branch, hobbies, gender, image } = req.body;
 
         const us = {
             name,
@@ -90,19 +83,12 @@ router.post('/submit/updates', upload.single('ProfilePhoto'), async (req, res) =
             redgno,
             mob,
             dob,
+            image,
             password,
             branch,
             hobbies,
             gender
         };
-
-        if (req.file) {
-            const imagePath = req.file.path;
-            us.image = {
-                data: fs.readFileSync(imagePath),
-                contentType: req.file.mimetype
-            };
-        }
 
         const token = req.headers['x-access-token'];
 
@@ -120,11 +106,8 @@ router.post('/submit/updates', upload.single('ProfilePhoto'), async (req, res) =
     } catch (error) {
         console.log(error);
         res.json({ status: 'error', error: 'File upload error' });
-    } finally {
-        // Delete the uploaded file after saving it in the database
-        if (req.file)
-            fs.unlinkSync(req.file.path);
     }
+
 });
 
 
@@ -145,19 +128,19 @@ router.post('/login', async (req, res) => {
     }
 })
 
-router.post('/upload', (req, res) => {
-    upload(req, res, (err) => {
-        if (err) { console.log(err) }
-        else {
-            const newImage = new ImageModel({
-                name: req.body.name
-            })
-            newImage.save()
-                .then(() => res.send("Successfully uploaded"))
-                .catch((err) => console.log(err))
-        }
-    })
-})
+// router.post('/upload', (req, res) => {
+//     upload(req, res, (err) => {
+//         if (err) { console.log(err) }
+//         else {
+//             const newImage = new ImageModel({
+//                 name: req.body.name
+//             })
+//             newImage.save()
+//                 .then(() => res.send("Successfully uploaded"))
+//                 .catch((err) => console.log(err))
+//         }
+//     })
+// })
 
 router.post('/add-event', async (req, res) => {
     const token = req.headers['x-access-token'];
@@ -186,13 +169,15 @@ router.post('/delete-event', async (req, res) => {
         console.log(req.body)
         const decode = jwt.verify(token, 'secret123');
         const email = decode.email;
-        const user = await schema.findOneAndUpdate({ email: email }, { $set: { events: req.body } });
+        const user = await schema.findOneAndUpdate({ email: email }, { $set: { events: req.body } }, { new: true });
         res.json({ status: 'ok', user: user });
     } catch (error) {
         console.log(error);
         res.json({ status: 'error', error: 'Invalid Token' });
     }
 });
+
+
 router.post('/add-todo', async (req, res) => {
     const token = req.headers['x-access-token'];
 
@@ -253,12 +238,13 @@ router.post('/add-subject', async (req, res) => {
         user.subjects.push(newTodo);
         await user.save();
 
-        res.json({ status: 'ok', message: 'Note added successfully' });
+        res.json({ status: 'ok', message: 'Note added successfully', data: user });
     } catch (error) {
         console.log(error);
         res.json({ status: 'error', message: 'Invalid Token' });
     }
 });
+
 router.get('/todo', async (req, res) => {
     const token = req.headers['x-access-token'];
 
@@ -277,12 +263,14 @@ router.get('/todo', async (req, res) => {
         console.log(err)
     }
 })
-router.post('/todoupdate',async(req,res)=>{
+
+
+router.post('/todoupdate', async (req, res) => {
     const token = req.headers['x-access-token'];
     try {
         const decoded = jwt.verify(token, 'secret123');
         const email = decoded.email;
-        const user = await schema.findOneAndUpdate({ email: email }, { $set: { todos: req.body } });
+        const user = await schema.findOneAndUpdate({ email: email }, { $set: { todos: req.body } }, { new: true });
         if (user) {
             res.json({ status: 'ok', data: user });
         }
@@ -294,12 +282,12 @@ router.post('/todoupdate',async(req,res)=>{
         console.log(err)
     }
 })
-router.post('/subupdate',async(req,res)=>{
+router.post('/subupdate', async (req, res) => {
     const token = req.headers['x-access-token'];
     try {
         const decoded = jwt.verify(token, 'secret123');
         const email = decoded.email;
-        const user = await schema.findOneAndUpdate({ email: email }, { $set: { subjects: req.body } });
+        const user = await schema.findOneAndUpdate({ email: email }, { $set: { subjects: req.body } }, { new: true });
         if (user) {
             res.json({ status: 'ok', data: user });
         }
@@ -311,12 +299,12 @@ router.post('/subupdate',async(req,res)=>{
         console.log(err)
     }
 })
-router.post('/update-notes',async(req,res)=>{
+router.post('/update-notes', async (req, res) => {
     const token = req.headers['x-access-token'];
     try {
         const decoded = jwt.verify(token, 'secret123');
         const email = decoded.email;
-        const user = await schema.findOneAndUpdate({ email: email }, { $set: { notes: req.body } });
+        const user = await schema.findOneAndUpdate({ email: email }, { $set: { notes: req.body } }, { new: true });
         if (user) {
             res.json({ status: 'ok', data: user });
         }
@@ -332,30 +320,39 @@ router.post('/update-notes',async(req,res)=>{
 router.post('/attendance', async (req, res) => {
     const token = req.headers['x-access-token'];
     try {
-      const { subjectName, date, status } = req.body;
-      const decoded = jwt.verify(token, 'secret123');
+        var { subjectName, date, status } = req.body;
+        date = new Date(date)
+        const decoded = jwt.verify(token, 'secret123');
         const email = decoded.email;
         const user = await schema.findOne({ email: email });
-  
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-  
-      const subject = user.subjects.find((subj) => subj.name === subjectName);
-  
-      if (!subject) {
-        return res.status(404).json({ error: 'Subject not found' });
-      }
-  
-      subject.attendance.push({ date, status });
-  
-      await user.save();
-  
-      res.json({ status: 'ok' });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const subject = user.subjects.find((subj) => subj.name === subjectName);
+
+        if (!subject) {
+            return res.status(404).json({ error: 'Subject not found' });
+        }
+        const pre = subject.attendance.find((obj) => obj.date.toDateString() == date.toDateString())
+        if (pre) {
+            console.log('same')
+            subject.attendance.forEach((obj) => {
+                if (obj.date.toDateString() == date.toDateString())
+                    obj.status = status
+            })
+        }
+        else
+            subject.attendance.push({ date, status })
+
+        await user.save();
+
+        res.json({ status: 'ok' });
     } catch (error) {
-      console.error('Error recording attendance:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+        console.error('Error recording attendance:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-  });
+});
 
 module.exports = router;     

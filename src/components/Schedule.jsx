@@ -7,20 +7,23 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import interactionPlugin from "@fullcalendar/interaction";
 import './schedule.css'
 import { ThreeDots } from 'react-loader-spinner';
+import url from './url';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Schedule = () => {
 
     const [events, setEvents] = useState([])
     const getData = async () => {
         try {
-            const response = await fetch('https://ivory-iguana-tutu.cyclic.app/submit', {
+            const response = await fetch(`${url}/submit`, {
                 method: 'GET',
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
                 },
             });
             const data = await response.json();
-            setEvents(data.user.events);
+            if (data.user.events)
+                setEvents(data.user.events);
         }
         catch (err) {
             console.log(err)
@@ -29,13 +32,14 @@ const Schedule = () => {
     useEffect(() => {
         getData()
     }, [])
+
+
     const DeleteEvent = async (ind) => {
-        console.log(ind)
         const arr = events
         arr.splice(ind, 1);
 
         try {
-            const response = await fetch('https://ivory-iguana-tutu.cyclic.app/delete-event', {
+            const response = await fetch(`${url}/delete-event`, {
                 method: 'POST',
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
@@ -46,16 +50,17 @@ const Schedule = () => {
 
             const data = await response.json();
             if (data.status === 'ok') {
-                window.alert('Event deleted successfully');
-                // Update the events in the state or perform any necessary actions
+                toast('Event deleted successfully');
+                setEvents(data.user.events)
             } else {
-                window.alert('Failed to add event');
+                toast('Failed to add event');
             }
         } catch (error) {
             console.log(error)
         }
-        getData()
     }
+
+
     const handleEventAdd = async (eventInfo) => {
         eventInfo.preventDefault();
         const title = eventInfo.target[0].value;
@@ -70,7 +75,7 @@ const Schedule = () => {
         };
 
         try {
-            const response = await fetch('https://ivory-iguana-tutu.cyclic.app/add-event', {
+            const response = await fetch(`${url}/add-event`, {
                 method: 'POST',
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
@@ -81,19 +86,26 @@ const Schedule = () => {
 
             const data = await response.json();
             if (data.status === 'ok') {
-                window.alert('Event added successfully');
-                // Update the events in the state or perform any necessary actions
+                toast('Event added successfully');
+                setEvents(data.user.events);
             } else {
-                window.alert('Failed to add event');
+                toast('Failed to add event');
             }
         } catch (error) {
             console.error('Error adding event:', error);
         }
-        getData()
     };
 
     return (
         <>
+            <Toaster toastOptions={{
+                style: {
+                    border: '1px solid white',
+                    padding: '16px',
+                    color: 'white',
+                    backgroundColor: '#0d0e23'
+                },
+            }} />
             <div className="header">
                 <h1>Calender</h1>
             </div>
@@ -121,7 +133,7 @@ const Schedule = () => {
                         fontSize: '1.2rem',
                         margin: 0
                     }}>Add an Event</p>
-                    <input type="text" name="title" className='input' placeholder='Enter the tilte..' required/> <br />
+                    <input type="text" name="title" className='input' placeholder='Enter the tilte..' required /> <br />
                     <span>start:</span> <input type="datetime-local" name="" id="" />
                     <span>end:</span> <input type="datetime-local" name="" id="" /> <br />
                     <button type='submit' className='subButton'>Add</button>

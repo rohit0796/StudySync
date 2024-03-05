@@ -34,6 +34,7 @@
 .attend-cont {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     width: 100%;
 }
@@ -75,6 +76,7 @@
     width: 80%;
     display: flex;
     overflow-x: scroll;
+    justify-content: center;
     white-space: nowrap;
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
@@ -196,6 +198,7 @@
 
     .attend-cont ul {
         width: 100%;
+        justify-content: start;
     }
 
     .subjects select {
@@ -205,7 +208,8 @@
     .AddSub form {
         flex-direction: column;
     }
-    .FullAtt-cont{
+
+    .FullAtt-cont {
         width: 100%;
     }
 }

@@ -11,6 +11,8 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import './notes.css'
 import { ThreeDots } from 'react-loader-spinner';
+import url from './url';
+import toast, { Toaster } from 'react-hot-toast';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
@@ -58,7 +60,7 @@ export default function Notes() {
   const [notes, setnotes] = React.useState([])
 
   const getData = () => {
-    fetch('https://ivory-iguana-tutu.cyclic.app/todo', {
+    fetch(`${url}/todo`, {
       method: "GET",
       headers: {
         'x-access-token': localStorage.getItem('token')
@@ -79,14 +81,34 @@ export default function Notes() {
     setOpen(false);
   };
 
+
+  const DeleteNote = () => {
+    if (window.confirm('Sure you want to delete the Note') === true) {
+      var tod = notes
+      tod.splice(ind, 1)
+      fetch(`${url}/update-notes`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': localStorage.getItem('token')
+        },
+        body: JSON.stringify(tod)
+      }).then((val) => val.json()).then((val) => setnotes(tod));
+      handleClose()
+    }
+  }
+
+
   const SendNotes = (e) => {
     e.preventDefault();
     var note = {
       title: e.target[0].value,
       desc: e.target[1].value,
     }
+    e.target[0].value = ''
+    e.target[1].value = ''
     try {
-      fetch('https://ivory-iguana-tutu.cyclic.app/add-notes', {
+      fetch(`${url}/add-notes`, {
         method: 'POST',
         headers: {
           'x-access-token': localStorage.getItem('token'),
@@ -97,21 +119,24 @@ export default function Notes() {
         .then((dat) => dat.json())
         .then((val) => {
           if (val) {
-            alert('Note Added')
+            toast('Note Added')
           }
         })
     } catch (error) {
       console.log(error)
     }
-    getData()
+    setnotes([...notes, note])
   }
+
+
+
   const UpdateNote = () => {
     handleClose();
     var obj = notes;
     obj[ind].title = title;
     obj[ind].desc = desc;
     try {
-      fetch('https://ivory-iguana-tutu.cyclic.app/update-notes', {
+      fetch(`${url}/update-notes`, {
         method: 'POST',
         headers: {
           'x-access-token': localStorage.getItem('token'),
@@ -120,14 +145,27 @@ export default function Notes() {
         body: JSON.stringify(obj)
       })
         .then((dat) => dat.json())
-        .then((val) => console.log(val))
+        .then(() => {
+          setnotes(obj)
+          toast('Note Updated')
+
+        })
     } catch (error) {
       console.log(error)
     }
-    getData()
   }
+
+
   return (
     <div>
+      <Toaster toastOptions={{
+        style: {
+          border: '1px solid white',
+          padding: '16px',
+          color: 'white',
+          backgroundColor: '#0d0e23'
+        },
+      }} />
       <div className="header">
         <h1>Notes</h1>
       </div>
@@ -144,7 +182,7 @@ export default function Notes() {
       </div>
       <div className="notes-cont">
         {
-          notes.length == 0 ?
+          notes && notes.length == 0 ?
             <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
               You Don't have anything here Yet
             </div> :
@@ -187,6 +225,9 @@ export default function Notes() {
         <DialogActions>
           <Button autoFocus onClick={UpdateNote}>
             Save changes
+          </Button>
+          <Button autoFocus onClick={DeleteNote}>
+            Delete
           </Button>
         </DialogActions>
       </BootstrapDialog>

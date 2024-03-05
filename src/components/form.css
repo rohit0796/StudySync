@@ -57,6 +57,12 @@ select {
     text-align: center;
     margin-top: 5px;
     transition: transform 330ms ease-in-out;
+    padding: 8px 15px;
+    border: none;
+    outline: none;
+    background-color: #0d0e23;
+    color: white;
+    border-radius: 12px;
 }
 
 .reset {

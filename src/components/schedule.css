@@ -21,13 +21,16 @@
     overflow: hidden;
 
 }
-.fc .fc-scrollgrid{
+
+.fc .fc-scrollgrid {
     border-collapse: collapse;
     border: 1px solid white;
 }
-tr{
+
+tr {
     border: none;
 }
+
 .add-event {
     color: white;
     display: flex;
@@ -120,14 +123,20 @@ tr{
     background: transparent;
     border: none;
     outline: none;
+    margin: 0;
+    padding: 0;
     color: white;
 }
 
 .del button:hover {
     color: rgb(255, 3, 3);
+    background-color: transparent;
 }
 
-
+.fc-theme-standard .fc-popover {
+    background: #050318;
+    border: 1px solid var(--fc-border-color);
+}
 
 @media only screen and (max-width: 600px) {
     .calender-cont {

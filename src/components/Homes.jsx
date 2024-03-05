@@ -5,10 +5,11 @@ import { Audio, ThreeDots } from 'react-loader-spinner'
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import url from './url';
 const Homes = () => {
     const [user, SetUser] = useState()
     const getData = () => {
-        fetch('https://ivory-iguana-tutu.cyclic.app/todo', {
+        fetch(`${url}/todo`, {
             method: "GET",
             headers: {
                 'x-access-token': localStorage.getItem('token')
@@ -18,18 +19,10 @@ const Homes = () => {
     useEffect(() => {
         getData()
     }, [])
-    const getImageSrc = () => {
-        if (user && user.image && user.image.data) {
-            const base64String = btoa(
-                String.fromCharCode(...new Uint8Array(user.image.data.data))
-            );
-            return `data:${user.image.contentType};base64,${base64String}`;
-        }
-        return user;
-    };
+
     if (!user)
         return (
-            <div style={{display:'flex',width:'100%',justifyContent:'center'}}>
+            <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
                 <ThreeDots
                     height="80"
                     width="80"
@@ -47,7 +40,7 @@ const Homes = () => {
             <div className='user-det'>
                 <div className="user-top">
                     <div className="photo" style={{
-                        backgroundImage: `url(${getImageSrc()})`,
+                        backgroundImage: `url(${user.image})`,
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',
                     }}>

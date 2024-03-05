@@ -2,8 +2,14 @@ import React, { useState } from 'react';
 import '../components/form.css'
 import { useNavigate } from 'react-router';
 import { ThreeDots } from 'react-loader-spinner';
+import url from './url';
+import AvatarModal from './AvatarModal'
+import toast, { Toaster } from 'react-hot-toast';
 function Form() {
     const navigate = useNavigate();
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const [isloading, setisloading] = useState(false)
     const [user, setUser] = useState({
         name: '',
@@ -13,7 +19,7 @@ function Form() {
         mob: '',
         gender: '',
         branch: '',
-        ProfilePhoto: null,
+        image: null,
         password: '',
         cpassword: ''
     });
@@ -23,16 +29,9 @@ function Form() {
         setUser({ ...user, [name]: value });
     };
 
-    const filechange = (e) => {
-        const { name, files } = e.target;
-        setUser({ ...user, [name]: files[0] });
-    };
-
     const postData = async (e) => {
         e.preventDefault();
-        setisloading(true)
-        const { name, redgno, email, dob, mob, gender, branch, ProfilePhoto, password, cpassword } = user;
-
+        const { name, redgno, email, dob, mob, gender, branch, image, password, cpassword } = user;
         if (name === '') {
             alert('Please fill in the name field');
         } else if (redgno === '') {
@@ -41,11 +40,13 @@ function Form() {
             alert('Please fill in the email field');
         } else if (dob === '') {
             alert('Please fill in the date of birth field');
-        } else if (ProfilePhoto === null) {
-            alert('Please provide a profile picture');
-        } else if (mob === '') {
+        }
+        else if (image === null) {
+            image = "https://avatar.iran.liara.run/public/46"
+        }
+        else if (mob === '') {
             alert('Please fill in the mobile no. field');
-        } else if (cpassword !== password) {
+        } else if (password == '' || cpassword !== password) {
             alert('Your password and confirm password inputs must be the same');
         } else {
             const formData = new FormData();
@@ -56,24 +57,31 @@ function Form() {
             formData.append('mob', mob);
             formData.append('gender', gender);
             formData.append('branch', branch);
-            formData.append('ProfilePhoto', ProfilePhoto);
+            formData.append('image', image);
             formData.append('password', password);
-
+            setisloading(true)
             try {
-                const res = await fetch('https://ivory-iguana-tutu.cyclic.app/register', {
+                const res = await fetch(`${url}/register`, {
                     method: 'POST',
-                    body: formData,
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(user),
                 });
 
                 const data = await res.json();
-                if (data.status === 422 || !data) {
-                    window.alert('Email Already Exists');
+                console.log(data)
+                if (data.error) {
+                    window.alert(data.error);
+                    setisloading(false)
                 } else {
                     setisloading(false)
-                    window.alert('Registration Successful');
+                    toast('Registration Successful');
                     navigate('/login');
                 }
             } catch (error) {
+                setisloading(false)
+                toast('Something Went Wrong !!')
                 console.log(error);
                 // Handle error
             }
@@ -81,6 +89,14 @@ function Form() {
     };
     return (
         <>
+            <Toaster toastOptions={{
+                style: {
+                    border: '1px solid white',
+                    padding: '16px',
+                    color: 'white',
+                    backgroundColor: '#0d0e23'
+                },
+            }} />
             <div className="container">
                 <div className="cont">
                     <div className="bodys">
@@ -114,8 +130,9 @@ function Form() {
                                             <td> <input type="text" placeholder="enter your Email" id="mail" name="email" value={user.email} onChange={inputValue} required /> </td>
                                         </tr>
                                         <tr>
-                                            <td>Upload Dp:</td>
-                                            <td className='dp'> <input type="file" name="ProfilePhoto" onChange={filechange} required /> </td>
+                                            <td>Choose Avatar:</td>
+                                            <td className='dp'> <button onClick={handleOpen} className='submit'>Choose</button> </td>
+                                            <AvatarModal handleClose={handleClose} user={user} setUser={setUser} open={open} />
                                         </tr>
                                         <tr>
                                             <td>Date of birth:</td>

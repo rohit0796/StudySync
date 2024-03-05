@@ -5,9 +5,15 @@ import { useNavigate } from 'react-router';
 import { useContext } from 'react';
 import Context from '../Context/Context';
 import { ThreeDots } from 'react-loader-spinner';
+import url from './url';
+import toast, { ToastBar, Toaster } from 'react-hot-toast';
 const Login = () => {
-    const state = useContext(Context)
     const navigate = useNavigate();
+    const token = localStorage.getItem('token')
+    if (token) {
+        navigate('/home')
+    }
+    const state = useContext(Context)
     const [isloading, setisloading] = useState(false)
     const [user, setUser] = useState(
         { email: '', password: '' }
@@ -23,35 +29,53 @@ const Login = () => {
         setisloading(true)
         const { email, password } = user;
         if (email == '') {
-            alert("please fill the email feild")
+            toast("please fill the email feild")
         }
-        else if (password == '')
-            alert("Please fill the password")
-        else {
-            const res = await fetch('https://ivory-iguana-tutu.cyclic.app/login', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email, password
-                })
+        else if (password === '') {
+            toast("Please fill the password")
+        }
 
-            })
-            const data = await res.json()
-            if (data.status === 'error' || !data) { window.alert("Invalid credentials") }
-            else {
-                setisloading(false)
-                window.alert("Login Successfull")
-                state.setToken(data.user)
-                localStorage.setItem('token', data.user)
-                navigate('/home')
+        else {
+            try {
+                const res = await fetch(`${url}/login`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email, password
+                    })
+
+                })
+                const data = await res.json()
+                if (data.status === 'error' || !data) {
+                    toast("Invalid credentials");
+                    setisloading(false)
+                }
+                else {
+                    setisloading(false)
+                    toast("Login Successfull")
+                    state.setToken(data.user)
+                    localStorage.setItem('token', data.user)
+                    navigate('/home')
+                }
+            }
+            catch (err) {
+                console.log(err)
             }
         }
     }
 
     return (
         <>
+            <Toaster toastOptions={{
+                style: {
+                    border: '1px solid white',
+                    padding: '16px',
+                    color: 'white',
+                    backgroundColor: '#0d0e23'
+                },
+            }} />
             <div className="container">
                 <div className="cont">
                     <div className="bodys">

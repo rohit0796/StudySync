@@ -7,7 +7,7 @@ const AttendanceForm = ({subjectName , change , setChange}) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
+    
     const newAttendance = {
       subjectName: subjectName,
       date,
@@ -25,7 +25,6 @@ const AttendanceForm = ({subjectName , change , setChange}) => {
       });
 
       if (response.ok) {
-        // Attendance recorded successfully
         console.log('Attendance recorded');
       } else {
         console.log('Failed to record attendance');

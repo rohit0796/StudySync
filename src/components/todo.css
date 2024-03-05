@@ -1,5 +1,4 @@
-.todo-cont form
-{
+.todo-cont form {
     background-color: #070710;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(6px);
@@ -9,7 +8,8 @@
     border-radius: 15px;
     text-align: center;
 }
-.todo-cont form input{
+
+.todo-cont form input {
     width: 80%;
     padding: 10px;
     border: none;
@@ -18,12 +18,14 @@
     background: transparent;
     border-bottom: 1px solid rgb(26, 26, 26);
 }
-.todo-cont button{
+
+.todo-cont button {
     border: none;
     outline: none;
     background: transparent;
 }
-.todoSubmit{
+
+.todoSubmit {
     background: rgba(18, 18, 18, 0.67);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -37,10 +39,12 @@
     padding: 15px;
     margin: 2px 5px;
 }
+
 .todoSubmit:hover {
     background-color: #2f2525a5;
 }
-.todos{
+
+.todos {
     background: #2c2d4c;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(6px);
@@ -52,9 +56,18 @@
     display: flex;
     justify-content: space-between;
 }
-.rig button{
+
+.rig button {
     width: auto;
     background: transparent;
     color: white;
 
+}
+
+.rig button:hover {
+    color: rgb(255, 3, 3);
+    background-color: transparent;
+}
+.lef{
+    cursor: pointer;
 }
