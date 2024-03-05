@@ -117,6 +117,7 @@ const Dashboard = () => {
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',
                     }}>
+                        {user.name[0]}
                     </div>
                     {isEditMode ? (
                         <button onClick={handleOpen} className='submit'>Choose</button>

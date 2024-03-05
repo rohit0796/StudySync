@@ -44,6 +44,7 @@ const Homes = () => {
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',
                     }}>
+                        {user ? user.name[0] : ""}
                     </div>
                     <div className="text">
                         <div className='Name'>Hello {user ? user.name : ""}</div>
