@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
     justify-content: center;
 }
 
@@ -30,10 +31,12 @@
     padding: 5px;
     border-radius: 50%;
 }
-.avatar-image{
+
+.avatar-image {
     height: 72px;
     margin: 8px;
 }
+
 .dettCont {
     width: 75%;
     margin: 20px;
@@ -44,17 +47,19 @@
 }
 
 .details button {
-    border: none;
     background-color: transparent;
     border-radius: 12px;
     outline: none;
+    border: 1px solid white;
     padding: 10px 15px;
     color: white;
 }
-.details button:hover{
+
+.details button:hover {
     background-color: #1a1b32;
 }
-.dettCont input{
+
+.dettCont input {
     background-color: transparent;
     border: none;
     padding: 5px 3px;
@@ -75,7 +80,8 @@
     text-align: left;
     width: 37%;
 }
-.User-Name{
+
+.User-Name {
     background-color: transparent;
     border: none;
     outline: none;
@@ -86,25 +92,31 @@
     text-align: center;
 }
 
-@media only screen and (max-width: 600px)  {
-    .dett{
+@media only screen and (max-width: 600px) {
+    .dett {
         margin-left: 0;
         width: 85%;
     }
+
     .dettCont {
         width: 100%;
     }
-    .details{
+
+    .details {
         width: 85%;
     }
-    .dett input,select{
+
+    .dett input,
+    select {
         width: 100%;
     }
-    .re{
+
+    .re {
         text-align: center;
     }
-    .content{
+
+    .content {
         overflow-x: scroll;
     }
-   
+
 }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
 import './todo.css'
-import { ThreeDots } from 'react-loader-spinner';
 import url from './url';
 import toast, { Toaster } from 'react-hot-toast';
 const Todo = () => {
@@ -67,16 +66,18 @@ const Todo = () => {
         .then((dat) => dat.json())
         .then((val) => {
           if (val) {
-            toast('Todo Added')
+            toast.success('Todo Added')
             setTodo([...todo, to])
           }
         })
     } catch (error) {
-      console.log(error)
+      toast.error(error)
     }
   }
   return (
-    <div>
+    <div style={{
+      width: '80%'
+    }}>
       <Toaster toastOptions={{
         style: {
           border: '1px solid white',
@@ -93,7 +94,7 @@ const Todo = () => {
           <input type="text" name="todo" placeholder='Enter To-do' required />
           <button type='submit' className='todoSubmit'>Add</button>
         </form>
-        {todo.length == 0 ?
+        {todo.length === 0 ?
           <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
             You Don't have anything here Yet
           </div>

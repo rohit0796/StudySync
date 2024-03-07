@@ -68,8 +68,10 @@
 }
 
 .right {
-    width: calc(100vw - 80px);
+    width: calc(100vw - 110px);
     margin-left: 80px;
+    display: flex;
+    justify-content: center;
 }
 
 .sidebar.expanded {
@@ -197,6 +199,7 @@
 .head h1 {
     font-weight: 200;
 }
+
 .fc-scrollgrid-sync-table tr {
     border: none;
 }
@@ -212,7 +215,7 @@
 
 .tcont {
     height: 70%;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .home-att {
@@ -230,7 +233,7 @@
     white-space: nowrap;
     align-items: center;
     justify-content: center;
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 
 @media only screen and (max-width: 600px) {

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import jwt from 'jsonwebtoken';
 import { useNavigate } from 'react-router';
 import { useContext } from 'react';
 import './dashboard.css'
 import Context from '../Context/Context';
-import user from '../components/media/user.png'
 import { ThreeDots } from 'react-loader-spinner';
 import url from './url';
 import toast, { Toaster } from 'react-hot-toast';
@@ -61,9 +59,9 @@ const Dashboard = () => {
 
             const data = await response.json();
             if (data.status === 422 || !data) {
-                toast('Invalid Updates');
+                toast.error('Invalid Updates');
             } else {
-                toast('Updated successfully');
+                toast.success('Updated successfully');
             }
             toggleEditMode();
         } catch (error) {
@@ -117,7 +115,6 @@ const Dashboard = () => {
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',
                     }}>
-                        {user.name[0]}
                     </div>
                     {isEditMode ? (
                         <button onClick={handleOpen} className='submit'>Choose</button>

@@ -73,49 +73,16 @@
 }
 
 .attend-cont ul {
-    width: 80%;
+    width: 80vw;
     display: flex;
-    overflow-x: scroll;
-    justify-content: center;
+    overflow-x: auto;
     white-space: nowrap;
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
+
 }
 
-.attend-cont ul {
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
-}
-
-/* Style the scrollbar track */
-::-webkit-scrollbar {
-    height: 2px;
-}
-
-/* Style the scrollbar thumb */
-.attend-cont ul::-webkit-scrollbar-thumb {
-    background-color: #ffffff;
-    border-radius: 4px;
-}
-
-/* Style the scrollbar thumb when hovering */
-.attend-cont ul::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-}
 
 .subjects form {
     text-align: center;
-}
-
-.subjects button {
-    padding: 6px 10px;
-    margin: 5px;
-    outline: none;
-    border: none;
-    border-radius: 9px;
-    color: white;
-    border: 1px solid #0d0e23;
-    background-color: transparent;
 }
 
 .subjects button:hover {
@@ -135,7 +102,7 @@
 }
 
 .AddSub form {
-    background: #0d0e23;
+    background: #070710;
     padding: 20px;
     display: flex;
     align-items: center;

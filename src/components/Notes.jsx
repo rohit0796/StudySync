@@ -2,7 +2,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -10,7 +9,6 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import './notes.css'
-import { ThreeDots } from 'react-loader-spinner';
 import url from './url';
 import toast, { Toaster } from 'react-hot-toast';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -119,11 +117,11 @@ export default function Notes() {
         .then((dat) => dat.json())
         .then((val) => {
           if (val) {
-            toast('Note Added')
+            toast.success('Note Added')
           }
         })
     } catch (error) {
-      console.log(error)
+      toast.error(error)
     }
     setnotes([...notes, note])
   }
@@ -147,11 +145,11 @@ export default function Notes() {
         .then((dat) => dat.json())
         .then(() => {
           setnotes(obj)
-          toast('Note Updated')
+          toast.success('Note Updated')
 
         })
     } catch (error) {
-      console.log(error)
+      toast.error(error)
     }
   }
 
@@ -182,13 +180,13 @@ export default function Notes() {
       </div>
       <div className="notes-cont">
         {
-          notes && notes.length == 0 ?
+          notes && notes.length === 0 ?
             <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
               You Don't have anything here Yet
             </div> :
             notes && notes.map((note, ind) => {
               return (
-                <button onClick={() => {
+                <button key={note._id} onClick={() => {
                   handleClickOpen(ind)
                 }}
                   style={{

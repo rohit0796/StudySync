@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import './home.css'
 import Fullcalendar from "@fullcalendar/react";
-import { Audio, ThreeDots } from 'react-loader-spinner'
+import {  ThreeDots } from 'react-loader-spinner'
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import timeGridPlugin from "@fullcalendar/timegrid";
+// import interactionPlugin from "@fullcalendar/interaction";
+// import timeGridPlugin from "@fullcalendar/timegrid";
 import url from './url';
+import Context from '../Context/Context';
 const Homes = () => {
-    const [user, SetUser] = useState()
+    // const [user, SetUser] = useState()
+    const { user, setUser } = useContext(Context)
     const getData = () => {
         fetch(`${url}/todo`, {
             method: "GET",
             headers: {
                 'x-access-token': localStorage.getItem('token')
             }
-        }).then((dat) => dat.json()).then((val) => SetUser(val.data))
+        }).then((dat) => dat.json()).then((val) => setUser(val.data))
     }
     useEffect(() => {
         getData()
@@ -44,7 +46,6 @@ const Homes = () => {
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',
                     }}>
-                        {user ? user.name[0] : ""}
                     </div>
                     <div className="text">
                         <div className='Name'>Hello {user ? user.name : ""}</div>
@@ -75,7 +76,7 @@ const Homes = () => {
                             </div>
                             <div className="tcont">
                                 {
-                                    user.todos.filter((ele) => ele.completed == false).map((todo) => <div className='todos'>{todo.title}</div>)
+                                    user.todos.filter((ele) => ele.completed === false).map((todo) => <div className='todos'>{todo.title}</div>)
                                 }
                             </div>
                         </div>
@@ -85,7 +86,7 @@ const Homes = () => {
                                 {
                                     user.subjects.map((subject, ind) => {
                                         var totalClass = user.subjects[ind].attendance.length
-                                        var newarr = user && user.subjects[ind].attendance.filter((ele) => ele.status == 'present')
+                                        var newarr = user && user.subjects[ind].attendance.filter((ele) => ele.status === 'present')
                                         var present = newarr.length
                                         const att = (present / totalClass) * 100
                                         if (att < 75) {

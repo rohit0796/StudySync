@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../components/form.css'
-import cross from './media/remove.png'
 import { useNavigate } from 'react-router';
 import { useContext } from 'react';
 import Context from '../Context/Context';
 import { ThreeDots } from 'react-loader-spinner';
 import url from './url';
-import toast, { ToastBar, Toaster } from 'react-hot-toast';
+import toast, {  Toaster } from 'react-hot-toast';
 const Login = () => {
     const navigate = useNavigate();
-    const token = localStorage.getItem('token')
-    if (token) {
-        navigate('/home')
-    }
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            navigate('/home')
+        }
+    }, [])
     const state = useContext(Context)
     const [isloading, setisloading] = useState(false)
     const [user, setUser] = useState(
@@ -26,17 +27,17 @@ const Login = () => {
     }
     const postData = async (e) => {
         e.preventDefault();
-        setisloading(true)
         const { email, password } = user;
-        if (email == '') {
-            toast("please fill the email feild")
+        if (email ==='') {
+            toast.error("please fill the email feild")
         }
         else if (password === '') {
-            toast("Please fill the password")
+            toast.error("Please fill the password")
         }
 
         else {
             try {
+                setisloading(true)
                 const res = await fetch(`${url}/login`, {
                     method: "POST",
                     headers: {
@@ -49,19 +50,18 @@ const Login = () => {
                 })
                 const data = await res.json()
                 if (data.status === 'error' || !data) {
-                    toast("Invalid credentials");
+                    toast.error("Invalid credentials");
                     setisloading(false)
                 }
                 else {
                     setisloading(false)
-                    toast("Login Successfull")
+                    navigate('/home')
                     state.setToken(data.user)
                     localStorage.setItem('token', data.user)
-                    navigate('/home')
                 }
             }
             catch (err) {
-                console.log(err)
+                toast.error(err)
             }
         }
     }
@@ -106,7 +106,7 @@ const Login = () => {
                                             </tr>
                                         </table>
                                         <div className="res">
-                                            <p>Don't have an account? <a onClick={() => navigate('/register')}>Register</a></p>
+                                            <p>Don't have an account? <a href='#' onClick={() => navigate('/register')}>Register</a></p>
                                             <button type="submit" className='submit' onClick={postData}>LOGIN</button>
                                         </div>
                                     </form>

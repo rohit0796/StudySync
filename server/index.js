@@ -8,7 +8,7 @@ const cors = require('cors')
 datb = "mongodb+srv://rohit:Rohit@cluster0.iz0xyeb.mongodb.net/test?retryWrites=true&w=majority"
 dotenv.config()
 mongoose.connect(datb, {
-  useNewURLParser: true,
+  useNewURLParser: true, 
 },6000000)
 .then(console.log("connected to server"))
 .catch((err) => console.log(err));

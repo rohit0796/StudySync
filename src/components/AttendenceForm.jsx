@@ -48,7 +48,7 @@ const AttendanceForm = ({subjectName , change , setChange}) => {
           <option value="absent">Absent</option>
         </select>
       </div>
-      <button type="submit">Add</button>
+      <button type="submit" className='dark-button'>Add</button>
     </form>
   );
 };

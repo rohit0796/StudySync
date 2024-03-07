@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Fullcalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -6,7 +6,6 @@ import EventIcon from '@mui/icons-material/Event';
 import DeleteIcon from '@mui/icons-material/Delete';
 import interactionPlugin from "@fullcalendar/interaction";
 import './schedule.css'
-import { ThreeDots } from 'react-loader-spinner';
 import url from './url';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -50,10 +49,10 @@ const Schedule = () => {
 
             const data = await response.json();
             if (data.status === 'ok') {
-                toast('Event deleted successfully');
+                toast.success('Event deleted successfully');
                 setEvents(data.user.events)
             } else {
-                toast('Failed to add event');
+                toast.error('Failed to add event');
             }
         } catch (error) {
             console.log(error)
@@ -86,10 +85,10 @@ const Schedule = () => {
 
             const data = await response.json();
             if (data.status === 'ok') {
-                toast('Event added successfully');
+                toast.success('Event added successfully');
                 setEvents(data.user.events);
             } else {
-                toast('Failed to add event');
+                toast.error('Failed to add event');
             }
         } catch (error) {
             console.error('Error adding event:', error);
@@ -106,61 +105,67 @@ const Schedule = () => {
                     backgroundColor: '#0d0e23'
                 },
             }} />
-            <div className="header">
-                <h1>Calender</h1>
-            </div>
-            <div className="calender-cont">
-                <Fullcalendar
-                    plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                    initialView="dayGridMonth"
-                    events={events}
-                    editable={true}
-                    selectable={true}
-                    selectMirror={true}
-                    dayMaxEvents={true}
-                    headerToolbar={{
-                        start: "prev,next",
-                        center: "title",
-                        end: "dayGridMonth,timeGridWeek,timeGridDay",
-                    }}
-                    height={'70vh'}
-                />
-            </div>
-            <div className="add-event">
-                <form onSubmit={handleEventAdd}>
-                    <p style={{
-                        textAlign: 'center',
-                        fontSize: '1.2rem',
-                        margin: 0
-                    }}>Add an Event</p>
-                    <input type="text" name="title" className='input' placeholder='Enter the tilte..' required /> <br />
-                    <span>start:</span> <input type="datetime-local" name="" id="" />
-                    <span>end:</span> <input type="datetime-local" name="" id="" /> <br />
-                    <button type='submit' className='subButton'>Add</button>
-                </form>
-                <div className="event-cont">
-                    {
-                        events.map((event, ind) => {
-                            return (
-                                <div className="event" key={ind}>
-                                    <div className="he">
-                                        <EventIcon />
-                                        <span style={{ marginLeft: '5px' }}>{event.title}</span><br />
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%'
+            }}>
+                <div className="header">
+                    <h1>Calender</h1>
+                </div>
+                <div className="calender-cont">
+                    <Fullcalendar
+                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                        initialView="dayGridMonth"
+                        events={events}
+                        editable={true}
+                        selectable={true}
+                        selectMirror={true}
+                        dayMaxEvents={true}
+                        headerToolbar={{
+                            start: "prev,next",
+                            center: "title",
+                            end: "dayGridMonth,timeGridWeek,timeGridDay",
+                        }}
+                        height={'70vh'}
+                    />
+                </div>
+                <div className="add-event">
+                    <form onSubmit={handleEventAdd}>
+                        <p style={{
+                            textAlign: 'center',
+                            fontSize: '1.2rem',
+                            margin: 0
+                        }}>Add an Event</p>
+                        <input type="text" name="title" className='input' placeholder='Enter the tilte..' required /> <br />
+                        <span>start:</span> <input type="datetime-local" name="" id="" />
+                        <span>end:</span> <input type="datetime-local" name="" id="" /> <br />
+                        <button type='submit' className='subButton'>Add</button>
+                    </form>
+                    <div className="event-cont">
+                        {
+                            events.map((event, ind) => {
+                                return (
+                                    <div className="event" key={ind}>
+                                        <div className="he">
+                                            <EventIcon />
+                                            <span style={{ marginLeft: '5px' }}>{event.title}</span><br />
+                                        </div>
+                                        <div className="dates">
+                                            <span>start: {event.start}</span><br />
+                                            <span>end: {event.end}</span>
+                                        </div>
+                                        <div className="del">
+                                            <button
+                                                onClick={() => {
+                                                    DeleteEvent(ind);
+                                                }}><DeleteIcon /></button>
+                                        </div>
                                     </div>
-                                    <div className="dates">
-                                        <span>start: {event.start}</span><br />
-                                        <span>end: {event.end}</span>
-                                    </div>
-                                    <div className="del">
-                                        <button
-                                            onClick={() => {
-                                                DeleteEvent(ind);
-                                            }}><DeleteIcon /></button>
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
+                                )
+                            })
+                        }
+                    </div>
                 </div>
             </div>
         </>

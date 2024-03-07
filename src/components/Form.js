@@ -19,7 +19,7 @@ function Form() {
         mob: '',
         gender: '',
         branch: '',
-        image: null,
+        image: 'https://avatar.iran.liara.run/public/46',
         password: '',
         cpassword: ''
     });
@@ -41,12 +41,9 @@ function Form() {
         } else if (dob === '') {
             alert('Please fill in the date of birth field');
         }
-        else if (image === null) {
-            image = "https://avatar.iran.liara.run/public/46"
-        }
         else if (mob === '') {
             alert('Please fill in the mobile no. field');
-        } else if (password == '' || cpassword !== password) {
+        } else if (password === '' || cpassword !== password) {
             alert('Your password and confirm password inputs must be the same');
         } else {
             const formData = new FormData();

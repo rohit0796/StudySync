@@ -4,17 +4,7 @@ const schema = require('./Models/dbschema')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 const multer = require('multer')
-// const fs = require('fs')
 var ObjectId = require('mongodb').ObjectID;
-// const Storage = multer.diskStorage({
-//     destination: 'uploads',
-//     filename: (req, file, cb) => {
-//         cb(null, file.originalname)
-//     }
-// })
-// const upload = multer({
-//     storage: Storage
-// })
 router.post('/register', async (req, res) => {
     const { name, email, redgno, mob, dob, password, branch, gender, image } = req.body;
     try {
@@ -128,19 +118,6 @@ router.post('/login', async (req, res) => {
     }
 })
 
-// router.post('/upload', (req, res) => {
-//     upload(req, res, (err) => {
-//         if (err) { console.log(err) }
-//         else {
-//             const newImage = new ImageModel({
-//                 name: req.body.name
-//             })
-//             newImage.save()
-//                 .then(() => res.send("Successfully uploaded"))
-//                 .catch((err) => console.log(err))
-//         }
-//     })
-// })
 
 router.post('/add-event', async (req, res) => {
     const token = req.headers['x-access-token'];
@@ -201,6 +178,8 @@ router.post('/add-todo', async (req, res) => {
         res.json({ status: 'error', message: 'Invalid Token' });
     }
 });
+
+
 router.post('/add-notes', async (req, res) => {
     const token = req.headers['x-access-token'];
 
@@ -354,5 +333,129 @@ router.post('/attendance', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+
+// Discussion
+
+const Discussion = require('./Models/DiscussionSchema')
+
+router.post("/create-Question", async (req, res) => {
+    try {
+        const question = req.body.question;
+        const user = req.body.user;
+
+        const ques = new Discussion({
+            question,
+            postedBy: user,
+        })
+        var data = await ques.save()
+        data = await Discussion.populate(data, {
+            path: 'postedBy',
+            select: 'name image '
+        })
+        res.json({ status: "ok", data: data })
+    } catch (error) {
+        res.status(500).json({ error: error })
+    }
+
+})
+
+router.get("/get-questions", async (req, res) => {
+    try {
+        var data = await Discussion.find().populate({
+            path: 'postedBy',
+            select: 'name image email redgno createdAt'
+        })
+        res.json({ status: 'ok', data: data })
+    }
+    catch (error) {
+        res.status(500).json({ error: error })
+    }
+})
+
+router.get("/get-questions/:id", async (req, res) => {
+    try {
+        const { id } = req.params
+        var data = await Discussion.findById(id).populate({
+            path: 'postedBy',
+            select: 'name image email redgno createdAt'
+        }).populate({
+            path: 'answers.likes.likedBy.users',
+            select: 'name image createdAt'
+        }).populate({
+            path: 'answers.repliedBy',
+            select: 'name image'
+        }).populate({ 
+            path: 'answers.replies',
+            populate: {
+                path: 'repliedBy',
+                model: 'studdatas',
+                select: 'name image'
+            }
+        });
+        res.json({ status: 'ok', data: data })
+    }
+    catch (error) {
+        res.status(500).json({ error: error })
+    }
+})
+
+router.post('/send-answer/:id', async (req, res) => {
+    const { content, repliedBy } = req.body;
+    const { id } = req.params;
+
+    var data = await Discussion.findById(id)
+    if (!data) {
+        res.status(500).json("Something Went Wrong")
+        return
+    }
+    data.answers.push({
+        content,
+        repliedBy
+    })
+    await data.save()
+    data = await Discussion.populate(data, {
+        path: 'answers.repliedBy',
+        select: 'name image'
+    });
+    res.json(data)
+})
+
+router.post('/send-reply/:id', async (req, res) => {
+    var ans = req.body
+    const { id } = req.params;
+    var data = await Discussion.findById(id)
+    if (!data) {
+        res.status(500).json("Something Went Wrong")
+        return
+    }
+    var answer = data.answers.map((answ) => {
+        if (answ._id == ans._id) {
+            return ans;
+        }
+        return answ
+    })
+    data = await Discussion.findByIdAndUpdate(id, { $set: { answers: answer } }, { new: true })
+        .populate({
+            path: 'answers.repliedBy',
+            select: 'name image'
+        })
+        .populate({
+            path: 'answers.replies',
+            populate: {
+                path: 'repliedBy',
+                model: 'studdatas',
+                select: 'name image'
+            }
+        });
+    res.json(data);
+
+})
+
+
+
+
+
+
 
 module.exports = router;     

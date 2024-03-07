@@ -4,11 +4,9 @@ import AttendanceForm from './AttendenceForm';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddSubjectForm from './AddSubjectForm';
 import FullAttendance from './FullAttendance';
-import { ThreeDots } from 'react-loader-spinner';
 import url from './url';
 const Attendence = () => {
   const [subjects, setSubjects] = useState([]);
-  const [load, setLoad] = useState(false);
   const [change, setChange] = useState(false)
   const [open, setopen] = useState(false)
   const [ind, setind] = useState()
@@ -64,7 +62,7 @@ const Attendence = () => {
           <ul>
             {subjects.map((subject, ind) => {
               var totalClass = subjects[ind].attendance.length
-              var newarr = subjects && subjects[ind].attendance.filter((ele) => ele.status == 'present')
+              var newarr = subjects && subjects[ind].attendance.filter((ele) => ele.status === 'present')
               var present = newarr.length
               const att = (present / totalClass) * 100
               return (
@@ -87,7 +85,7 @@ const Attendence = () => {
         <AddSubjectForm onSubjectAdded={handleSubjectAdded} />
       </div>
       {
-        ind != null ? <FullAttendance subject={subjects[ind]} /> : <div className='header'>Please Select a subject To See Its Full Attendance</div>
+        ind !== null ? <FullAttendance subject={subjects[ind]} /> : <div className='header'>Please Select a subject To See Its Full Attendance</div>
       }
     </div>
 
