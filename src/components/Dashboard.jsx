@@ -7,41 +7,37 @@ import { ThreeDots } from 'react-loader-spinner';
 import url from './url';
 import toast, { Toaster } from 'react-hot-toast';
 import AvatarModal from './AvatarModal';
+import Questions from './Questions';
 const Dashboard = () => {
     const [updated, setUpdated] = useState(true)
-    const state = useContext(Context);
+    const { token, user, setUser,setQuestionId,setpage } = useContext(Context);
     const [date, setDate] = useState('');
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();
-    const [user, setUser] = useState({});
     const [isEditMode, setIsEditMode] = useState(false);
 
     const toggleEditMode = () => {
         setIsEditMode(!isEditMode);
     };
-
+    const [questions, setQuestions] = useState([])
+    useEffect(() => {
+        getData()
+    }, [])
     async function getData() {
-        try {
-            const response = await fetch(`${url}/submit`, {
-                method: 'GET',
-                headers: {
-                    'x-access-token': localStorage.getItem('token'),
 
-                },
-            });
-            const data = await response.json();
-            setUser(data.user);
-            const dt = new Date(data.user.dob);
-            let mon = dt.getMonth() + 1;
-            let day = dt.getDate();
-            let yr = dt.getFullYear();
-            const formattedDate = `${yr}-${mon < 10 ? '0' + mon : mon}-${day < 10 ? '0' + day : day}`;
-            setDate(formattedDate);
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-        }
+        const dt = new Date(user.dob);
+        let mon = dt.getMonth() + 1;
+        let day = dt.getDate();
+        let yr = dt.getFullYear();
+        const formattedDate = `${yr}-${mon < 10 ? '0' + mon : mon}-${day < 10 ? '0' + day : day}`;
+        setDate(formattedDate);
+
+        fetch(`${url}/get-questions`).then((val) => val.json()).then((data) => {
+            var ques = data.data.filter((ques) => ques.postedBy._id == user._id)
+            setQuestions(ques)
+        })
     }
 
     const postData = async (e) => {
@@ -72,13 +68,16 @@ const Dashboard = () => {
 
 
     useEffect(() => {
-        if (!state.token) {
+        if (!token) {
             navigate('/login');
         } else {
             getData();
         }
     }, [updated]);
-
+    const handleQuestionSelect = (id) => {
+        setpage(8)
+        setQuestionId(id)
+    }
     if (!user)
         return (
             <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
@@ -230,6 +229,13 @@ const Dashboard = () => {
                     </div>
                     <button onClick={isEditMode ? postData : toggleEditMode}>{isEditMode ? 'SAVE' : 'EDIT'}</button>
                 </div>
+                <div className="header">
+                    <h1>Your Questions</h1>
+                </div>
+                {
+                    questions.length == 0 ? <p>You did not posted any questions!</p> :
+                        <Questions questions={questions} handleQuestionSelect={handleQuestionSelect} />
+                }
             </div>
         );
 };

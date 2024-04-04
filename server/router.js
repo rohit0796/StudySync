@@ -143,7 +143,6 @@ router.post('/add-event', async (req, res) => {
 router.post('/delete-event', async (req, res) => {
     const token = req.headers['x-access-token'];
     try {
-        console.log(req.body)
         const decode = jwt.verify(token, 'secret123');
         const email = decode.email;
         const user = await schema.findOneAndUpdate({ email: email }, { $set: { events: req.body } }, { new: true });
@@ -385,7 +384,7 @@ router.get("/get-questions/:id", async (req, res) => {
         }).populate({
             path: 'answers.repliedBy',
             select: 'name image'
-        }).populate({ 
+        }).populate({
             path: 'answers.replies',
             populate: {
                 path: 'repliedBy',
@@ -451,7 +450,23 @@ router.post('/send-reply/:id', async (req, res) => {
     res.json(data);
 
 })
-
+router.post('/delete-question/:id', async (req, res) => {
+    const { id } = req.params;
+    const question = await Discussion.findByIdAndDelete(id, { new: true })
+        .populate({
+            path: 'answers.repliedBy',
+            select: 'name image'
+        })
+        .populate({
+            path: 'answers.replies',
+            populate: {
+                path: 'repliedBy',
+                model: 'studdatas',
+                select: 'name image'
+            }
+        });
+    res.json(question);
+})
 
 
 

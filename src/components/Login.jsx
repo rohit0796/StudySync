@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import Context from '../Context/Context';
 import { ThreeDots } from 'react-loader-spinner';
 import url from './url';
-import toast, {  Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 const Login = () => {
     const navigate = useNavigate();
     useEffect(() => {
@@ -28,7 +28,7 @@ const Login = () => {
     const postData = async (e) => {
         e.preventDefault();
         const { email, password } = user;
-        if (email ==='') {
+        if (email === '') {
             toast.error("please fill the email feild")
         }
         else if (password === '') {
@@ -55,6 +55,8 @@ const Login = () => {
                 }
                 else {
                     setisloading(false)
+                    toast.success("Login Successfull")
+                    state.setpage(1)
                     navigate('/home')
                     state.setToken(data.user)
                     localStorage.setItem('token', data.user)

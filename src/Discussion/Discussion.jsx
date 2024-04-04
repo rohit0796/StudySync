@@ -3,6 +3,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import url from '../components/url'
 import './discussion.css'
 import Context from '../Context/Context'
+import Questions from '../components/Questions'
 const Discussion = () => {
     const { user, setpage, setQuestionId } = useContext(Context)
     const [questions, setQuestions] = useState([])
@@ -44,6 +45,9 @@ const Discussion = () => {
     return (
         <div style={{
             width: '100%',
+            display:'flex',
+            flexDirection:'column',
+            alignItems:'center'
         }}>
             <Toaster toastOptions={{
                 style: {
@@ -62,25 +66,8 @@ const Discussion = () => {
                     <button type='submit' className='todoSubmit'>Add</button>
                 </form>
                 <div className="question-cont">
-                    {
-                        questions && questions.map((question, ind) => {
-                            var date = question.createdAt.slice(0, 10)
-                            date = date + "-  " + question.createdAt.slice(11, 16)
-                            return (
-                                <div className="questions" key={ind} onClick={() => handleQuestionSelect(question._id)}>
-                                    <div className='question-detail'>
-                                        <img src={question.postedBy.image} alt="" className='discusson-avatar' />
-                                        <span><strong>{question.postedBy.name}</strong></span>
-                                        <span>asked on: {date}</span>
-                                    </div>
-                                    <p>Q: {question.question}</p>
-                                    <div className="time">
-                                        <span>{question.answers.length} answers</span>
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
+                    <Questions questions={questions}
+                        handleQuestionSelect={handleQuestionSelect} />
                 </div>
             </div>
         </div>

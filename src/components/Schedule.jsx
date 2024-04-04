@@ -108,6 +108,7 @@ const Schedule = () => {
             <div style={{
                 display: 'flex',
                 flexDirection: 'column',
+                alignItems:'center',
                 width: '100%'
             }}>
                 <div className="header">

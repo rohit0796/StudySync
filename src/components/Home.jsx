@@ -28,9 +28,7 @@ const Home = () => {
     const { token, page, setpage, setToken, questionId } = useContext(Context)
     useEffect(() => {
         if (!token)
-            navigate('/login')
-        else
-            toast.success("Login Successfull")
+            navigate('/login')           
     }, [token])
     return (
         <>

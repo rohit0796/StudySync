@@ -17,6 +17,10 @@
     align-items: center;
 }
 
+.todo-cont {
+    width: 95%;
+}
+
 .questions:hover {
     background-color: #3f3f5c;
 
@@ -95,19 +99,17 @@
 }
 
 .inputs {
-    width: 85%;
+    width: 60%;
     background-color: #0d0e23;
     padding: 5px;
     border-radius: 10px;
-    position: absolute;
-    bottom: 10px;
-    left: 115px;
     display: flex;
     justify-content: center;
+    margin: 7px;
 }
 
 .inputs input {
-    width: 90%;
+    width: 100%;
     padding: 8px;
     color: white;
     background: transparent;
@@ -123,7 +125,7 @@
 .answers-cont {
     overflow-y: auto;
     display: flex;
-    height: calc(100vh - 274px);
+    height: calc(100vh - 310px);
     width: 100%;
     flex-direction: column;
     align-items: center;
@@ -183,6 +185,10 @@
     padding: 6px;
 }
 
+.reply-button {
+    height: 50px;
+}
+
 .question-cont {
     display: flex;
     flex-direction: column;
@@ -190,4 +196,48 @@
     overflow-y: auto;
     align-items: center;
     width: 100%;
+}
+
+.question-wrapper form {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.dark-button:hover {
+    background-color: white;
+    color: #0d0e23;
+}
+
+@media only screen and (max-width: 600px) {
+    .todo-cont form {
+        margin: 5px 2px
+    }
+
+    ;
+
+    .todo-cont {
+        width: 70vw;
+    }
+
+    .Question-head {
+        width: 90vw;
+    }
+
+    .answers-cont {
+        width: 90vw;
+    }
+
+    .answers {
+        width: 90%;
+    }
+
+    .reply {
+        width: 86%;
+    }
+
+    .question-wrapper form {
+        width: 95vw;
+    }
 }
