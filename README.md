@@ -5,10 +5,11 @@ The Student Class Management System is a web application that allows students to
 ## Features
 
 - User Authentication: Register and log in securely to access the system.
-- Dashboard: View upcoming classes, recent attendance, and important announcements.
-- Class Management: Add, edit, and delete classes along with relevant details.
+- Dashboard: View upcoming classes, recent attendance, todo.
+- Class Management: Add scheduled classes or events along with relevant details.
 - Attendance Tracking: Mark attendance for each class session and view attendance history.
-- Notifications: Receive real-time notifications for class updates and announcements.
+- todos and notes saving.
+- Discussion Forum: a discussion forum where questions can be posted and gets answered.
 
 ## Prerequisites
 
